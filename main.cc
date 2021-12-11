@@ -1,4 +1,5 @@
 #include <iostream>
+#include<bits/stdc++.h>
 #include "sphere.h"
 #include "hitable_list.h"
 #include "float.h"
@@ -7,6 +8,7 @@
 #include "random.h"
 
 #define MAXFLOAT FLT_MAX
+using namespace std;
 
 vec3 color(const ray& r, hitable *world, int depth) {
     hit_record rec;
@@ -76,12 +78,15 @@ int main() {
     int ns = 10;
     std::cout << "P3\n" << nx << " " << ny << "\n255\n";
     hitable *world = random_scene();
+    clock_t time_req;
 
     vec3 lookfrom(13,2,3);
     vec3 lookat(0,0,0);
     float dist_to_focus = 10.0;
     float aperture = 0.1;
-
+    
+    time_req = clock();
+    
     camera cam(lookfrom, lookat, vec3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus);
 
     for (int j = ny-1; j >= 0; j--) {
@@ -98,7 +103,10 @@ int main() {
             int ir = int(255.99*col[0]);
             int ig = int(255.99*col[1]);
             int ib = int(255.99*col[2]);
-            std::cout << ir << " " << ig << " " << ib << "\n";
+            //std::cout << ir << " " << ig << " " << ib << "\n";
         }
     }
+    time_req = clock()- time_req;
+    std::cout << "Processor time taken for Raytracing: "
+        << (float)time_req/CLOCKS_PER_SEC << " seconds" << endl;
 }
